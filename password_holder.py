@@ -1,3 +1,5 @@
+# programele issaugo vartotojo vebsaitu logina ir slaptazodi
+
 from tkinter import*
 import pickle
 langas = Tk()
@@ -16,6 +18,7 @@ def issaugoti():
         pickle.dump(sarasas, failas)
     l_confirmation["text"] = "New data is saved!"
     return sarasas
+    
 sarasas=[]
     
 def atidaryti():
