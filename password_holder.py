@@ -2,8 +2,9 @@
 # aprasyti funkcijas
 # leisti vartuotojui ivesti duomenys
 # issaugoti duomenys i faila
+# from time import sleep
+# from pickle import PickleBuffer
 
-from time import sleep
 import pickle
 from tkinter import *
 langas = Tk()
@@ -19,39 +20,44 @@ def issaugoti():
     new_e_password = e_password.get()
     e_password.delete(0, len(new_e_password))
     ivestis = f"website: {new_e_website}, username: {new_e_account}, password: {new_e_password}"
-    l_confirmation["text"] = "New data is saved!"
     sarasas.append(ivestis)
     with open("add/sarasas.pkl", "wb") as failas:
         pickle.dump(sarasas, failas)
+    l_confirmation["text"] = "New data is saved!"
     return sarasas
 
 
+# vidinis langas - sarasas
 def atidaryti():
     langas_sarasas = Tk()
-    langas_sarasas.geometry("300x500")
+    langas_sarasas.geometry("700x300")
 
     with open("add/sarasas.pkl", "rb") as failas:
         sarasas = pickle.load(failas)
 
-    # try:
-    #     pasirinkta = sarasas[dezute.curselection()[0]]
-    # except:
-    #     l_choose["text"] = "Nothing"
-    # else: 
-    #     l_choose["text"] = pasirinkta
+    def pasirinkti():
+            try:
+                pasirinkta = sarasas[dezute.curselection()[0]]
+            except: 
+                l_choose["text"] = "Please shoose webside for password review!"
+            else: 
+                l_choose["text"] = pasirinkta
 
-    
-# vidinis langas - sarasas
+
+
     dezute_scroll = Scrollbar(langas_sarasas)   
-    dezute = Listbox(langas_sarasas)#,yscrollcommand=dezute_scroll.set, width=20)
+    dezute = Listbox(langas_sarasas, yscrollcommand=dezute_scroll.set, width=70)
     dezute_scroll.config(command=dezute.yview)
     dezute.insert(END, *sarasas)
     dezute.pack(side=LEFT, fill=Y)
-    l_choose = Label(langas_sarasas, text="Your chose in here:")
-    b_choose = Button(langas_sarasas, text="Choose", command=atidaryti)
     dezute_scroll.pack(side=RIGHT,fill=Y)
-    b_choose.pack()
+    l_choose = Label(langas_sarasas, text="Your chose is here:")
+    b_choose = Button(langas_sarasas, text="login password view", command=pasirinkti)
     l_choose.pack()
+    b_choose.pack()
+
+ 
+
 
 # pagrindinis langas
 l_confirmation = Label(langas, text="", anchor=N)
@@ -81,4 +87,5 @@ l_confirmation.grid(row=5, column=1, sticky=N)
 b_sarasas.grid(row=7,column=1, sticky=N)
 
 # b_save.pack(side=RIGHT)
+
 langas.mainloop()
